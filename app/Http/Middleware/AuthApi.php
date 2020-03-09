@@ -1,15 +1,16 @@
 <?php
 
 namespace App\Http\Middleware;
-
+use Auth;
 use App\Model\JwtUser;
 use Closure;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Tymon\JWTAuth\Http\Middleware\BaseMiddleware;
 
-class AuthApi
+class AuthApi extends  BaseMiddleware
 {
     /**
      * Handle an incoming request.
@@ -41,22 +42,20 @@ class AuthApi
                     'msg'=>'请先登录！'
                 ],400);
             }
-/*            $pre = "api/jwt/common";
-            $model = new JwtUser();
-            $urls = $model->allowedUrl($user['id']);
-            if($route_data->getAction()['prefix']!= $pre && !in_array($route_data->getAction()['prefix'],$urls)){
-                return response()->json([
-                    'code' => 1006,
-                    'msg'=>'无权限！'
-                ],402);
-
-            }*/
         }catch (TokenExpiredException $e){
-            //token已过期
-            return response()->json([
-                'code' => 1003,
-                'msg' => 'token 过期' , //token已过期
-            ],400);
+            //token已过期 刷新?
+
+            try{
+                $token = $this->auth->refresh();
+                // 使用一次性登录以保证此次请求的成功
+                Auth::guard('apijwt')->onceUsingId($this->auth->manager()->getPayloadFactory()->buildClaimsCollection()->toPlainArray()['sub']);
+            }catch (JWTException $e){
+                return response()->json([
+                    'code' => 1002,
+                    'msg' => $e->getMessage() , //token 无法刷新
+                ],400);
+            }
+            return $this->setAuthenticationHeader($next($request), $token);
         }catch (TokenInvalidException $e){
             if(in_array($url,['refresh'])){
                 //刷新token
@@ -65,7 +64,7 @@ class AuthApi
             return response()->json([
                 'code' => 1002,
                 'msg' => '请先登录' , //token已过期
-            ],400);
+            ],403);
         }catch (JWTException $e){
             return response()->json([
                 'code' => 1001,
