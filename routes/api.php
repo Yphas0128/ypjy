@@ -43,9 +43,15 @@ use Illuminate\Http\Request;
 
 
         Route::prefix('menu')->group(function () {
-
+            Route::post('getdata','MenuController@getdata');
+            Route::post('getinfo','MenuController@getinfo');
+            Route::post('add','MenuController@add');
         });
 
+        Route::prefix('hook')->group(function () {
+            Route::post('add','HookController@add');
+            Route::post('getdata','HookController@getdata');
+        });
 
        /*
         Route::post('menu/getdata','MenuController@getdata');
