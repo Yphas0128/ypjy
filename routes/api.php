@@ -29,6 +29,7 @@ use Illuminate\Http\Request;
             Route::post('gettree','RoleController@gettree');
             Route::post('rights','RoleController@rights');
             Route::post('options','RoleController@options');
+            Route::post('edithooks','RoleController@edithooks');
         });
 
         Route::prefix('userc')->group(function () {
@@ -51,6 +52,7 @@ use Illuminate\Http\Request;
         Route::prefix('hook')->group(function () {
             Route::post('add','HookController@add');
             Route::post('getdata','HookController@getdata');
+            Route::post('gethook','HookController@gethook');
         });
 
        /*

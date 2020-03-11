@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Model\Menu;
 use App\Model\Role;
+use App\Model\Rolehook;
 use App\Traits\Common;
 use Illuminate\Http\Request;
 
@@ -12,6 +13,25 @@ class RoleController extends Controller
     //
 
     use Common;
+
+
+    public function edithooks(Request $request){
+        $id = $request->input('id');
+        $hooks = $request->input('hooks');
+        if(Rolehook::where('rId',$id)->first()){
+            Rolehook::where('rId',$id)->delete();
+        }
+        foreach ($hooks as $v){
+            $arr =[];
+            $arr['rId'] = $id;
+            $arr['url'] = $v;
+            if(!Rolehook::create($arr)){
+                return response()->json(['msg'=>'保存失败']);
+            }
+        }
+        return response()->json(['msg'=>'保存成功']);
+    }
+
 
     public function options(){
         $data = Role::select('id','name as label')->get();
@@ -64,5 +84,4 @@ class RoleController extends Controller
         return response()->json(['data'=>$data]);
 
     }
-
 }

@@ -99,7 +99,7 @@ class JwtController extends Controller
             return response()->json(['user'=>$data]);
         }
     }
-    
+
 
 
     /*注册*/

@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Model\Hook;
+use App\Model\Rolehook;
 use Illuminate\Http\Request;
 
-class HookController extends Controller
+class HookController extends BaseapiController
 {
     //
     public function add(Request $request){
@@ -22,5 +23,13 @@ class HookController extends Controller
         if($data = Hook::paginate($size)){
             return response()->json(['data'=>$data]);
         }
+    }
+
+    //
+
+    public function gethook(Request $request){
+        $id = $request->input('id');
+        $hooks = Rolehook::where('rId',$id)->pluck('url');
+        return response()->json(['data'=>$this->getRouteList(),'hooks'=>$hooks]);
     }
 }
