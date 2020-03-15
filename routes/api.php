@@ -18,6 +18,11 @@ use Illuminate\Http\Request;
 });*/
 
     Route::group(['prefix' => 'jwt','middleware'=>'admin_api_auth'], function () {
+        Route::prefix('adv')->group(function () {
+            Route::post('add', 'AdvController@add');
+            Route::post('getdata', 'AdvController@getdata');
+            Route::post('upload', 'AdvController@upload');
+        });
         Route::prefix('common')->group(function () {
             Route::post('register', 'JwtController@register');
             Route::post('login', 'JwtController@login');

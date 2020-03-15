@@ -7,8 +7,10 @@
     "require": {
         "php": ">=7.0.0",
         "fideloper/proxy": "~3.3",
+        "freyo/flysystem-qcloud-cos-v5": "^2.0",
         "laravel/framework": "5.5.*",
         "laravel/tinker": "~1.0",
+        "qcloud/cos-sdk-v5": ">=2.0",
         "tymon/jwt-auth": "1.*@rc"
     },
     "require-dev": {

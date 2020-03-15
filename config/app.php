@@ -179,6 +179,7 @@ return [
 
         //JWT
         Tymon\JWTAuth\Providers\LaravelServiceProvider::class,
+        Freyo\Flysystem\QcloudCOSv5\ServiceProvider::class,
 
     ],
 

@@ -26,7 +26,7 @@ class MenuController extends Controller
         if($menu = Menu::create($data)){
             return response()->json(['msg' => "菜单添加成功"]);
         }
-        return  response()->json(['msg' => "菜单添加失败"],401);
+        return  response()->json(['msg' => "菜单添加失败"],403);
 
     }
 
